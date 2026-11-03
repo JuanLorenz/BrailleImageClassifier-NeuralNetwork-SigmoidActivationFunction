@@ -118,7 +118,6 @@
             outputLetterLbl.Size = new Size(189, 168);
             outputLetterLbl.TabIndex = 6;
             outputLetterLbl.Text = "A";
-            outputLetterLbl.Visible = false;
             // 
             // Form1
             // 
