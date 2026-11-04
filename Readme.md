@@ -97,7 +97,10 @@ All files are written to the folder of the executable (`bin\Debug\...`).
 
 **Chosen configuration:** Hidden = 128, LR Out = .05, LR In = 0.0375, Epochs = 200
 
-**Why:** 
+**Why:** Training logs indicate that there are no major spikes in gain.
+Fluctuations start at epoch 130 and persist til epoch 200.
+Hidden = 128 outperformed both 64 (insufficient capacity) and 256 (likely slight over-parameterization leading to higher test loss).
+Optimal Learning Rate Range: LR Out = 0.05 to 0.10 hits the sweet spot between stability and convergence speed.
 
 
 ## Limitations
