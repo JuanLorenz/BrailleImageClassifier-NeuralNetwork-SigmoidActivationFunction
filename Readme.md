@@ -105,6 +105,12 @@ All files are written to the folder of the executable (`bin\Debug\...`).
 - Recognizes one braille cell (letters a to z) per image. It does not read whole words or pages, numbers, capital signs or punctuation.
 - Any uploaded image is resized to 28 x 28, so it works best with images that look like the dataset.
 
+## Current Configurations for Current Best Accuracy (72.12%)
+
+Epoch: 200
+Hidden: 128
+LROut: 0.05
+LRIn: 0.0375
 
 -------------------------------
 
