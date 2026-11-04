@@ -59,7 +59,7 @@ The main screen can only interpret images after the network has been trained, so
 4. **Click `Train`.** Every 10 epochs the log shows the train loss, test loss and test accuracy, and the graph draws the train loss (blue) and test loss (red). When it prints "Finished", the weights are saved automatically. **`Stop`** ends training early.
 5. **Click `Evaluate`** to see the overall accuracy and the precision and recall of every letter. A `confusion_matrix.csv` file is saved.
 6. **Try the hold-out splits** (Hold out: dim, rot, whs) and train again to see how the network handles variations it has not seen.
-7. **Click `Run Experiments`** to test every combination of hidden size (32, 64, 128) and learning rate (0.05, 0.2, 0.5). The results are added to `experiments.csv`. This takes a while.
+7. **Click `Run Experiments`** to test every combination of hidden size (64, 128, 256) and learning rate (0.02, 0.05, 0.1). The results are added to `experiments.csv`. This takes a while.
 8. **Train one last time with the best settings** you found. The last training run is the network the main screen will use.
 
 ### B. Interpret an image
@@ -94,9 +94,8 @@ All files are written to the folder of the executable (`bin\Debug\...`).
 
 ## EVALUATION 
 
-**To be filled out**
 
-**Chosen configuration:** Hidden = _, LR Out = _, LR In = _, Epochs = _
+**Chosen configuration:** Hidden = 128, LR Out = .05, LR In = 0.0375, Epochs = 200
 
 **Why:** 
 

@@ -11,6 +11,8 @@
 
   <ItemGroup>
     <Folder Include="BrailleDataset\" />
+    <Folder Include="Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

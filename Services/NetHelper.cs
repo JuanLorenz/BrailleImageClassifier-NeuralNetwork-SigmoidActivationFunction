@@ -8,8 +8,8 @@ namespace Backprop
     public static class NetHelper
     {
         // the trainer saves these two files and Form1 loads them
-        public static string WeightsFile = Path.Combine(Application.StartupPath, "braille_weights.txt");
-        public static string HiddenFile = Path.Combine(Application.StartupPath, "braille_hidden.txt");
+        public static string WeightsFile = Path.Combine(Application.StartupPath, "Models", "braille_weights.txt");
+        public static string HiddenFile = Path.Combine(Application.StartupPath, "Models", "braille_hidden.txt");
 
         // puts one image on the input neurons and its letter on the desired outputs (1 for the letter, 0 for the rest)
         public static void SetSample(NeuralNet net, BrailleImage img)

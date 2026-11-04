@@ -20,7 +20,7 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
         List<double> testLoss = new List<double>();
         string logCsv = "";
         bool stopTraining = false;
-        string csvPath = Path.Combine(Application.StartupPath, "braille.csv");
+        string csvPath = Path.Combine(Application.StartupPath, "Data", "braille.csv");
 
         public Form2()
         {
@@ -33,6 +33,9 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
         private void Form2_Load(object sender, EventArgs e)
         {
             cmbSplit.SelectedIndex = 0;
+
+            Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Data"));
+            Directory.CreateDirectory(Path.Combine(Application.StartupPath, "Models"));
         }
 
         // do not close the window while a training thread is still running
@@ -67,7 +70,11 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
         {
             OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter = "CSV files|*.csv";
-            dialog.InitialDirectory = Application.StartupPath;
+
+            string dataDir = Path.Combine(Application.StartupPath, "Data");
+            Directory.CreateDirectory(dataDir);
+            dialog.InitialDirectory = dataDir;
+
             if (dialog.ShowDialog() != DialogResult.OK) return;
 
             int skipped;
@@ -114,8 +121,8 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
             }
             int[,] matrix = NetHelper.ConfusionMatrix(net, testSet);
             Log(NetHelper.Report(matrix));
-            NetHelper.SaveMatrix(matrix, Path.Combine(Application.StartupPath, "confusion_matrix.csv"));
-            Log("Saved confusion_matrix.csv");
+            NetHelper.SaveMatrix(matrix, Path.Combine(Application.StartupPath, "Data", "confusion_matrix.csv"));
+            Log("Saved confusion_matrix.csv in Data/");
         }
 
         private void btnSaveWeights_Click(object sender, EventArgs e)
@@ -125,9 +132,16 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
                 MessageBox.Show("There is no network to save.");
                 return;
             }
+
             SaveFileDialog dialog = new SaveFileDialog();
             dialog.Filter = "Text files|*.txt";
+
+            // Set initial directory to the Models subfolder
+            string modelsDir = Path.Combine(Application.StartupPath, "Models");
+            Directory.CreateDirectory(modelsDir);
+            dialog.InitialDirectory = modelsDir;
             dialog.FileName = "braille_weights.txt";
+
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 net.saveWeights(dialog.FileName);
@@ -170,6 +184,7 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
                 if (stopTraining) break;
                 TrainOneEpoch(net);
 
+
                 if (epoch == 1 || epoch % 10 == 0)
                 {
                     double trLoss, trAcc, teLoss, teAcc;
@@ -183,8 +198,9 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
             // Form1 needs both files: the weights and the hidden size they were trained with
             net.saveWeights(NetHelper.WeightsFile);
             File.WriteAllText(NetHelper.HiddenFile, hidden.ToString());
-            File.WriteAllText(Path.Combine(Application.StartupPath, "training_log.csv"), logCsv);
-            Log("Finished. Saved braille_weights.txt and training_log.csv");
+            File.WriteAllText(Path.Combine(Application.StartupPath, "Data", "training_log.csv"), logCsv);
+
+            Log("Finished. Saved braille_weights.txt (Models/) and training_log.csv (Data/)");
             Invoke(new Action(() => SetButtons(true)));
         }
 
@@ -193,7 +209,7 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
         {
             int[] hiddenSizes = { 64, 128, 256 };
             double[] rates = { 0.02, 0.05, 0.1 };   // output layer rate, the input layer uses 75% of it
-            string path = Path.Combine(Application.StartupPath, "experiments.csv");
+            string path = Path.Combine(Application.StartupPath, "Data", "experiments.csv");
             if (!File.Exists(path)) File.WriteAllText(path, "hidden,lr_out,lr_in,epochs,test_loss,test_acc\r\n");
 
             foreach (int hidden in hiddenSizes)
@@ -213,7 +229,7 @@ namespace BrailleImageClassifier_NeuralNetwork_SigmoidActivationFunction
                 }
                 if (stopTraining) break;
             }
-            Log("Experiments finished, results are in experiments.csv");
+            Log("Experiments finished, results are in Data/experiments.csv");
             Invoke(new Action(() => SetButtons(true)));
         }
 
